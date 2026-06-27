@@ -26,7 +26,7 @@ SAMPLE_PAYLOAD = {
 
 
 def test_health_endpoint():
-    with patch("app.router.health.cloud_client") as mock_cc:
+    with patch("app.service.health_service.cloud_client") as mock_cc:
         mock_cc._s3.list_buckets.return_value = {"Buckets": []}
         from app.main import app
         with TestClient(app) as client:
@@ -67,7 +67,7 @@ def test_predict_endpoint_409_when_no_model():
 
 
 def test_metrics_endpoint_404_when_no_metrics():
-    with patch("app.router.metrics.load_metrics", return_value=None):
+    with patch("app.service.metrics_service.load_metrics", return_value=None):
         from app.main import app
         with TestClient(app) as client:
             resp = client.get("/api/v1/metrics")
@@ -85,7 +85,7 @@ def test_metrics_endpoint_returns_metrics():
         "train_samples": 5000,
         "test_samples": 1000,
     }
-    with patch("app.router.metrics.load_metrics", return_value=mock_metrics):
+    with patch("app.service.metrics_service.load_metrics", return_value=mock_metrics):
         from app.main import app
         with TestClient(app) as client:
             resp = client.get("/api/v1/metrics")
