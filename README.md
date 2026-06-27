@@ -19,13 +19,16 @@ cp .env.example .env
 
 ### 2. Colocar el dataset
 
-Descarga el dataset **Telco Customer Churn** (Kaggle) y coloca el CSV aquí:
+Descarga el dataset **Telco Customer Churn** (Kaggle) y coloca el archivo en:
 
 ```
-data/raw/Telco_customer_churn.csv
+data/raw/
 ```
 
-> El directorio `data/raw/` está en `.gitignore` — el CSV nunca se versiona.
+El nombre y formato del archivo deben coincidir con el valor de `S3_DATASET_KEY` en tu `.env`
+(por defecto: `raw/Telco_customer_churn.xlsx`). El sistema soporta `.xlsx`, `.xls` y `.csv`.
+
+> El directorio `data/raw/` está en `.gitignore` — el dataset nunca se versiona.
 
 ### 3. Levantar la plataforma
 
@@ -41,7 +44,7 @@ Esto construye las imágenes y levanta los 3 contenedores. La primera vez puede 
 make nexus-init
 ```
 
-Crea el bucket S3 en Floci y sube el CSV a S3.
+Crea el bucket S3 en Floci y sube el dataset a S3.
 
 ---
 

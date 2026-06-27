@@ -1,5 +1,7 @@
 import io
 import logging
+from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
@@ -19,10 +21,18 @@ from app.repository.metrics_repository import save_metrics
 logger = logging.getLogger(__name__)
 
 
+def _read_dataset(file_bytes: bytes, key: str) -> pd.DataFrame:
+    """Lee el dataset desde bytes detectando el formato por la extensión de S3_DATASET_KEY."""
+    ext = Path(key).suffix.lower()
+    if ext in (".xlsx", ".xls"):
+        return pd.read_excel(io.BytesIO(file_bytes))
+    return pd.read_csv(io.BytesIO(file_bytes))
+
+
 def train() -> dict:
     """
     Ciclo completo de entrenamiento:
-    1. Descarga CSV desde S3
+    1. Descarga dataset desde S3 (formato detectado por extensión de S3_DATASET_KEY)
     2. Limpia TotalCharges
     3. Divide en train/test
     4. Entrena sklearn Pipeline
@@ -33,12 +43,8 @@ def train() -> dict:
     logger.info("=== Inicio de entrenamiento ===")
 
     # 1. Descargar dataset desde S3
-    file_bytes = cloud_client.download_s3(settings.s3_csv_key)
-    key = settings.s3_csv_key.lower()
-    if key.endswith(".xlsx") or key.endswith(".xls"):
-        df = pd.read_excel(io.BytesIO(file_bytes))
-    else:
-        df = pd.read_csv(io.BytesIO(file_bytes))
+    file_bytes = cloud_client.download_s3(settings.s3_dataset_key)
+    df = _read_dataset(file_bytes, settings.s3_dataset_key)
     logger.info("Dataset cargado: %d filas, %d columnas", len(df), len(df.columns))
 
     # 2. Limpiar TotalCharges (string con espacios → float, vacíos → NaN)
