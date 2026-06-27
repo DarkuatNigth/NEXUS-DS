@@ -26,6 +26,7 @@ services:
     volumes:
       - ./services/api/app:/app/app
       - ./tests:/app/tests
+      - ./data/raw:/app/data/raw
     env_file: .env
     environment:
       # CRITICO: dentro de la red Docker el host es el nombre del servicio, no localhost
