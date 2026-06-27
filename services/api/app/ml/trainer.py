@@ -32,9 +32,13 @@ def train() -> dict:
     """
     logger.info("=== Inicio de entrenamiento ===")
 
-    # 1. Descargar CSV desde S3
-    csv_bytes = cloud_client.download_s3(settings.s3_csv_key)
-    df = pd.read_csv(io.BytesIO(csv_bytes))
+    # 1. Descargar dataset desde S3
+    file_bytes = cloud_client.download_s3(settings.s3_csv_key)
+    key = settings.s3_csv_key.lower()
+    if key.endswith(".xlsx") or key.endswith(".xls"):
+        df = pd.read_excel(io.BytesIO(file_bytes))
+    else:
+        df = pd.read_csv(io.BytesIO(file_bytes))
     logger.info("Dataset cargado: %d filas, %d columnas", len(df), len(df.columns))
 
     # 2. Limpiar TotalCharges (string con espacios → float, vacíos → NaN)
