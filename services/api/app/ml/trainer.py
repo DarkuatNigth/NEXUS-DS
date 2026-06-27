@@ -13,7 +13,7 @@ from sklearn.metrics import (
 )
 from app.core.config import settings
 from app.infra.cloud_client import cloud_client
-from app.ml.preprocessing import clean_total_charges, TARGET
+from app.ml.preprocessing import clean_total_charges, normalize_columns, TARGET
 from app.ml.pipeline import build_pipeline
 from app.repository.model_repository import save_model
 from app.repository.metrics_repository import save_metrics
@@ -33,11 +33,12 @@ def train() -> dict:
     """
     Ciclo completo de entrenamiento:
     1. Descarga dataset desde S3 (formato detectado por extensión de S3_DATASET_KEY)
-    2. Limpia TotalCharges
-    3. Divide en train/test
-    4. Entrena sklearn Pipeline
-    5. Calcula métricas
-    6. Guarda pipeline en S3 y métricas en SSM
+    2. Normaliza nombres de columna (soporta dataset IBM 33-col con espacios)
+    3. Limpia TotalCharges
+    4. Divide en train/test
+    5. Entrena sklearn Pipeline
+    6. Calcula métricas
+    7. Guarda pipeline en S3 y métricas en SSM
     Retorna el dict de métricas.
     """
     logger.info("=== Inicio de entrenamiento ===")
@@ -47,24 +48,27 @@ def train() -> dict:
     df = _read_dataset(file_bytes, settings.s3_dataset_key)
     logger.info("Dataset cargado: %d filas, %d columnas", len(df), len(df.columns))
 
-    # 2. Limpiar TotalCharges (string con espacios → float, vacíos → NaN)
+    # 2. Normalizar nombres de columna (soporta formato IBM 33-col con espacios)
+    df = normalize_columns(df)
+
+    # 3. Limpiar TotalCharges (string con espacios → float, vacíos → NaN)
     df = clean_total_charges(df)
 
-    # 3. Preparar X e y
+    # 4. Preparar X e y
     y = (df[TARGET].str.strip().str.lower() == "yes").astype(int)
     X = df.drop(columns=[TARGET, "customerID"], errors="ignore")
 
-    # 4. Split 80/20
+    # 5. Split 80/20
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    # 5. Entrenar Pipeline completo (preprocesador + clasificador)
+    # 6. Entrenar Pipeline completo (preprocesador + clasificador)
     pipeline = build_pipeline()
     pipeline.fit(X_train, y_train)
     logger.info("Pipeline entrenado")
 
-    # 6. Métricas
+    # 7. Métricas
     y_pred = pipeline.predict(X_test)
     y_proba = pipeline.predict_proba(X_test)[:, 1]
 
@@ -79,7 +83,7 @@ def train() -> dict:
     }
     logger.info("Métricas: %s", metrics)
 
-    # 7. Persistir
+    # 8. Persistir
     save_model(pipeline)
     save_metrics(metrics)
 
