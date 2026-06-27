@@ -1,0 +1,40 @@
+name: NEXUS-DS CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r services/api/requirements.txt
+
+      - name: Lint with ruff
+        run: ruff check services/api/app/ tests/
+
+      - name: Run tests
+        env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ENDPOINT_URL: http://localhost:4566
+          S3_BUCKET: nexus-ds-bucket
+          S3_CSV_KEY: raw/Telco_customer_churn.csv
+          S3_MODEL_KEY: models/pipeline.joblib
+          SSM_METRICS_PATH: /nexus-ds/metrics/latest
+        run: pytest tests/ -v --tb=short
