@@ -49,6 +49,7 @@ services:
     env_file: .env
     environment:
       API_BASE_URL: http://nexus-api:8000
+      PYTHONPATH: /app
     depends_on:
       floci:
         condition: service_healthy
