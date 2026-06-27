@@ -1,0 +1,61 @@
+services:
+
+  floci:
+    image: floci/floci:latest
+    container_name: nexus-floci
+    ports:
+      - "4566:4566"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_floci/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    networks:
+      - nexus-net
+
+  nexus-api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    container_name: nexus-api
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./services/api/app:/app/app
+      - ./tests:/app/tests
+    env_file: .env
+    environment:
+      # CRITICO: dentro de la red Docker el host es el nombre del servicio, no localhost
+      AWS_ENDPOINT_URL: http://floci:4566
+    depends_on:
+      floci:
+        condition: service_healthy
+    networks:
+      - nexus-net
+
+  nexus-ui:
+    build:
+      context: .
+      dockerfile: docker/ui.Dockerfile
+    container_name: nexus-ui
+    ports:
+      - "${UI_PORT:-8501}:8501"
+    volumes:
+      - ./services/ui/app:/app/app
+    env_file: .env
+    environment:
+      API_BASE_URL: http://nexus-api:8000
+    depends_on:
+      floci:
+        condition: service_healthy
+      nexus-api:
+        condition: service_started
+    networks:
+      - nexus-net
+
+networks:
+  nexus-net:
+    driver: bridge

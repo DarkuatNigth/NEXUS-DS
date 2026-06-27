@@ -1,0 +1,17 @@
+# Secrets / entorno local
+.env
+
+# Datos crudos (el usuario los coloca manualmente)
+data/raw/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.joblib
+*.egg-info/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Superpowers (herramienta de desarrollo interna)
+.superpowers/
