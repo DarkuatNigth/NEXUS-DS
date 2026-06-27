@@ -36,7 +36,6 @@ def test_exists_s3_true_and_false():
     """exists_s3 retorna True si la key existe, False si no."""
     import boto3
     from app.infra.cloud_client import CloudClient
-    from botocore.exceptions import ClientError
 
     s3 = boto3.client("s3", region_name="us-east-1")
     s3.create_bucket(Bucket="nexus-ds-bucket")
