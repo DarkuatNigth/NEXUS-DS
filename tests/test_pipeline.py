@@ -1,4 +1,3 @@
-import pytest
 import pandas as pd
 from app.ml.preprocessing import clean_total_charges, TARGET
 from app.ml.pipeline import build_pipeline

@@ -1,9 +1,8 @@
 import pytest
 import boto3
-import json
 from moto import mock_aws
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 @pytest.fixture(scope="function")
