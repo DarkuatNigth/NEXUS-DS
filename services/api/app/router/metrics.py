@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
 from app.domain.schemas import MetricsResponse
-from app.repository.metrics_repository import load_metrics
+from app.service.metrics_service import get_metrics as _get_metrics
 
 router = APIRouter(prefix="/api/v1")
 
 
 @router.get("/metrics", response_model=MetricsResponse)
 async def get_metrics():
-    metrics = load_metrics()
+    metrics = _get_metrics()
     if metrics is None:
         raise HTTPException(
             status_code=404,
