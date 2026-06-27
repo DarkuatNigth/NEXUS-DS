@@ -22,18 +22,20 @@ def main() -> None:
     if cloud_client.exists_s3(settings.s3_csv_key):
         logger.info("CSV ya existe en S3: %s — saltando subida", settings.s3_csv_key)
     else:
-        # El CSV debe estar en /app/data/raw/ (montado vía bind mount o copiado)
-        local_csv = Path("/app/data/raw/Telco_customer_churn.csv")
-        if not local_csv.exists():
+        # El nombre del archivo viene de S3_CSV_KEY (ej. raw/Telco_customer_churn.xlsx)
+        filename = Path(settings.s3_csv_key).name
+        local_file = Path("/app/data/raw") / filename
+        if not local_file.exists():
             logger.error(
-                "CSV no encontrado en %s. "
-                "Coloca el dataset en data/raw/Telco_customer_churn.csv antes de correr nexus-init.",
-                local_csv,
+                "Archivo no encontrado en %s. "
+                "Coloca el dataset en data/raw/%s antes de correr nexus-init.",
+                local_file,
+                filename,
             )
             sys.exit(1)
-        data = local_csv.read_bytes()
+        data = local_file.read_bytes()
         cloud_client.upload_s3(settings.s3_csv_key, data)
-        logger.info("CSV subido a S3: %s (%d bytes)", settings.s3_csv_key, len(data))
+        logger.info("Dataset subido a S3: %s (%d bytes)", settings.s3_csv_key, len(data))
 
     logger.info("=== init_cloud completado ===")
 
