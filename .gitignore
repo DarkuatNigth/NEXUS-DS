@@ -2,7 +2,7 @@
 .env
 
 # Datos crudos (el usuario los coloca manualmente)
-data/raw/*.csv
+data/raw/*
 
 # Python
 __pycache__/
@@ -15,3 +15,6 @@ dist/
 
 # Superpowers (herramienta de desarrollo interna)
 .superpowers/
+.remember/
+CLAUDE.md
+.claude/
