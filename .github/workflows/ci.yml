@@ -22,10 +22,16 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install -r services/api/requirements.txt
+        run: uv sync --all-groups
 
       - name: Lint with ruff
-        run: ruff check services/api/app/ tests/
+        run: uv run ruff check services/api/app/ tests/
+
+      # - name: Install dependencies
+      #   run: pip install -r services/api/requirements.txt
+
+      # - name: Lint with ruff
+      #   run: ruff check services/api/app/ tests/
 
       - name: Run tests
         env:
