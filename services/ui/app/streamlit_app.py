@@ -1,5 +1,6 @@
 import streamlit as st
-from app.api_client import trigger_train, get_train_status
+
+from app.api_client import get_train_status, trigger_train
 from app.components.metrics_panel import render_metrics_panel
 from app.components.prediction_form import render_prediction_form
 
