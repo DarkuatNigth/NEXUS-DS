@@ -48,4 +48,4 @@ jobs:
           S3_DATASET_KEY: raw/Telco_customer_churn.xlsx
           S3_MODEL_KEY: models/pipeline.joblib
           SSM_METRICS_PATH: /nexus-ds/metrics/latest
-        run: pytest tests/ -v --tb=short
+        run:  uv run pytest tests/ -v --tb=short
