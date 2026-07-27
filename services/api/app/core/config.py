@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
@@ -11,5 +12,6 @@ class Settings(BaseSettings):
     s3_dataset_key: str = "raw/Telco_customer_churn.xlsx"
     s3_model_key: str = "models/pipeline.joblib"
     ssm_metrics_path: str = "/nexus-ds/metrics/latest"
+
 
 settings = Settings()

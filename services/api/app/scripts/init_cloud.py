@@ -3,6 +3,7 @@ Script de inicialización de la infraestructura cloud en Floci.
 Crea el bucket S3 y sube el dataset si no existe en S3.
 El formato del dataset (xlsx, csv, etc.) se determina por S3_DATASET_KEY en .env.
 """
+
 import logging
 import sys
 from pathlib import Path
