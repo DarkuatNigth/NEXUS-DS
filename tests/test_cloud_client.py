@@ -1,5 +1,6 @@
+from unittest.mock import MagicMock, patch
+
 from moto import mock_aws
-from unittest.mock import patch, MagicMock
 
 
 @mock_aws

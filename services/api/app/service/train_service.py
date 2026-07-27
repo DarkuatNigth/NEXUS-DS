@@ -1,5 +1,6 @@
 import logging
 import threading
+
 from app.ml.trainer import train
 from app.service.model_service import invalidate_pipeline
 

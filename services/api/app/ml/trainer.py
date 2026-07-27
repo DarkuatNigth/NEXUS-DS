@@ -3,20 +3,21 @@ import logging
 from pathlib import Path
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
     accuracy_score,
+    f1_score,
     precision_score,
     recall_score,
-    f1_score,
     roc_auc_score,
 )
+from sklearn.model_selection import train_test_split
+
 from app.core.config import settings
 from app.infra.cloud_client import cloud_client
-from app.ml.preprocessing import clean_total_charges, normalize_columns, TARGET
 from app.ml.pipeline import build_pipeline
-from app.repository.model_repository import save_model
+from app.ml.preprocessing import TARGET, clean_total_charges, normalize_columns
 from app.repository.metrics_repository import save_metrics
+from app.repository.model_repository import save_model
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+
 from app.core.logging import setup_logging
-from app.router import health, train, predict, metrics
+from app.router import health, metrics, predict, train
 
 setup_logging()
 

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+
 from app.domain.schemas import PredictRequest, PredictResponse
 from app.service.model_service import predict
 
@@ -10,5 +11,5 @@ async def predict_churn(request: PredictRequest):
     try:
         label, proba = predict(request.model_dump())
     except ValueError as e:
-        raise HTTPException(status_code=409, detail=str(e))
+        raise HTTPException(status_code=409, detail=str(e)) from e
     return PredictResponse(churn=label, probability=round(proba, 4))

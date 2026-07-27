@@ -1,6 +1,6 @@
 import pandas as pd
-from app.ml.preprocessing import clean_total_charges, TARGET
 from app.ml.pipeline import build_pipeline
+from app.ml.preprocessing import TARGET, clean_total_charges
 
 
 def _make_training_df(n: int = 50) -> pd.DataFrame:

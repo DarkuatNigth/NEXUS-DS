@@ -1,11 +1,10 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 from app.ml.preprocessing import (
-    clean_total_charges,
-    build_column_transformer,
     NUMERIC_FEATURES,
-    CATEGORICAL_FEATURES,
     TARGET,
+    build_column_transformer,
+    clean_total_charges,
 )
 
 

@@ -1,6 +1,7 @@
 import logging
-from app.infra.cloud_client import cloud_client
+
 from app.core.config import settings
+from app.infra.cloud_client import cloud_client
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,6 @@
 import json
 import logging
+
 from app.core.config import settings
 from app.infra.cloud_client import cloud_client
 

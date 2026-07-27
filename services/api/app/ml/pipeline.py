@@ -1,5 +1,6 @@
-from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
+
 from app.ml.preprocessing import build_column_transformer
 
 

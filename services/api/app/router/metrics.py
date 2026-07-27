@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+
 from app.domain.schemas import MetricsResponse
 from app.service.metrics_service import get_metrics as _get_metrics
 

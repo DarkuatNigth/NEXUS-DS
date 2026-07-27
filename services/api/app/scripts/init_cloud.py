@@ -7,8 +7,9 @@ El formato del dataset (xlsx, csv, etc.) se determina por S3_DATASET_KEY en .env
 import logging
 import sys
 from pathlib import Path
-from app.core.logging import setup_logging
+
 from app.core.config import settings
+from app.core.logging import setup_logging
 from app.infra.cloud_client import cloud_client
 
 setup_logging()

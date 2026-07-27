@@ -1,5 +1,7 @@
 import logging
+
 import pandas as pd
+
 from app.repository.model_repository import load_model, model_exists
 
 logger = logging.getLogger(__name__)

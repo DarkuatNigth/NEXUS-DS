@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
+
 from app.domain.schemas import TrainStatus
-from app.service.train_service import launch_training, get_status
+from app.service.train_service import get_status, launch_training
 
 router = APIRouter(prefix="/api/v1")
 

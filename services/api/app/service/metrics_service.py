@@ -1,4 +1,5 @@
 import logging
+
 from app.repository.metrics_repository import load_metrics
 
 logger = logging.getLogger(__name__)

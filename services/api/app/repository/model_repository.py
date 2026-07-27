@@ -1,6 +1,8 @@
 import io
 import logging
+
 import joblib
+
 from app.core.config import settings
 from app.infra.cloud_client import cloud_client
 

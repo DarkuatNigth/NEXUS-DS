@@ -1,8 +1,8 @@
 import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 # Mapeo de nombres del dataset IBM extendido (33 col, nombres con espacios)
 # al dataset estándar Kaggle (21 col, camelCase). pandas rename ignora claves ausentes,
