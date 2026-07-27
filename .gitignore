@@ -18,3 +18,12 @@ dist/
 .remember/
 CLAUDE.md
 .claude/
+
+.coverage
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/
+models/
+*.joblib
