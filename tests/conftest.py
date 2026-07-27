@@ -47,5 +47,6 @@ def mock_cloud_client():
 def test_client(mock_cloud_client):
     """TestClient de FastAPI con CloudClient mockeado."""
     from app.main import app
+
     with TestClient(app) as client:
         yield client

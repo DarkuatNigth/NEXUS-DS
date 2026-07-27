@@ -6,6 +6,7 @@ from unittest.mock import patch, MagicMock
 def test_upload_and_download_s3():
     """upload_s3 sube bytes; download_s3 recupera los mismos bytes."""
     import boto3
+
     s3 = boto3.client("s3", region_name="us-east-1")
     s3.create_bucket(Bucket="nexus-ds-bucket")
 
@@ -13,6 +14,7 @@ def test_upload_and_download_s3():
         mock_boto3.client.return_value = s3
         # Reimportar con moto activo
         from app.infra.cloud_client import CloudClient
+
         with patch("app.core.config.settings") as mock_settings:
             mock_settings.aws_endpoint_url = "http://localhost:4566"
             mock_settings.aws_access_key_id = "test"
